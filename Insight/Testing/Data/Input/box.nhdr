@@ -1,0 +1,13 @@
+NRRD0004
+type: float
+dimension: 3
+sizes: 20 20 20
+# some bogus orientation information to make sure mapping from
+# nrrd orientation to ITK orientation is there
+space: RAS
+space directions: (0,0,1) (0,2,0) (3,0,0)
+space origin: (1.1,2.2,3.3)
+endian: big
+encoding: raw
+data file: box.raw
+foo:=bar

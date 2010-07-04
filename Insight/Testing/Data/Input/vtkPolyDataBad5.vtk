@@ -1,0 +1,5 @@
+# vtk DataFile Version 3.0
+numberOfPoints < 1
+ASCII
+DATASET POLYDATA
+POINTS 0 float

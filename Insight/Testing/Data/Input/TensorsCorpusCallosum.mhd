@@ -1,0 +1,13 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+TransformMatrix = -1 0 0 0 -1 0 0 0 1
+Offset = 0 0 0
+CenterOfRotation = 0 0 0
+AnatomicalOrientation = RPI
+ElementSpacing = 0.9375 0.9375 2.5
+DimSize = 95 69 12
+ElementNumberOfChannels = 6
+ElementType = MET_DOUBLE
+ElementDataFile = TensorsCorpusCallosum.raw

@@ -1,0 +1,14 @@
+ObjectType = Image
+NDims = 2
+CompressedData = True
+CompressedDataSize = 0
+BinaryData = True
+BinaryDataByteOrderMSB = False
+TransformMatrix = 1 0 0 1
+Offset = 0 0
+CenterOfRotation = 0 0
+ElementSpacing = 1 1
+DimSize = 201 201
+AnatomicalOrientation = ??
+ElementType = MET_DOUBLE
+ElementDataFile = itkSignedMaurerDistanceMapImageFilterTest1.zraw

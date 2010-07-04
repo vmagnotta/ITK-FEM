@@ -1,0 +1,16 @@
+numDim: 4
+dim: 24 24 1 1
+origin: -8.625 -8.625 0 0
+extent: 63.000000 63.000000 15.000000 15.000000 
+fov: 18.0 18.00000 1.000000 1.000000 
+interval: 0.75 0.75 1.000000 1.000000 
+dataType: WORD
+displayRange: 0  0.05861
+fidName:pp_ga.ax.epi.fid
+sdtOrient: ax
+dsplyThres:  0.100000
+endian: ieee-be
+mapParmFileName:study1.mp
+mapTypeName:t-val
+mapConf:  0.95000
+stimFileName: BigEndian.img

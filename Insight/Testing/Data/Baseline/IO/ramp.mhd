@@ -1,0 +1,7 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+DimSize = 30 30 30
+ElementType = MET_USHORT
+ElementDataFile = ramp.raw

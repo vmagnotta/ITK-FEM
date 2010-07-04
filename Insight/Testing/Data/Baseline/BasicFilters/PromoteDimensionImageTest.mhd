@@ -1,0 +1,7 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+DimSize = 127 162 1
+ElementType = MET_UCHAR
+ElementDataFile = PromoteDimensionImageTest.raw

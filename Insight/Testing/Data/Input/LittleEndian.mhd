@@ -1,0 +1,6 @@
+NDims = 3
+DimSize = 24 24 1
+HeaderSize = -1
+ElementType = MET_USHORT
+ElementByteOrderMSB = False
+ElementDataFile = LittleEndian.img

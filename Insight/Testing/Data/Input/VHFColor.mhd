@@ -1,0 +1,8 @@
+NDims = 3
+DimSize = 50 50 10
+ElementSpacing = 1 1 1
+Position = 0 0 0
+ElementByteOrderMSB = False
+ElementNumberOfChannels = 3
+ElementType = MET_UCHAR
+ElementDataFile = VHFColor.raw

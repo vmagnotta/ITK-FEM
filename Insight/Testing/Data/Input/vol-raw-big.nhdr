@@ -1,0 +1,10 @@
+NRRD0001
+# Complete NRRD file format specification at:
+# http://teem.sourceforge.net/nrrd/format.html
+type: double
+dimension: 3
+sizes: 5 6 7
+spacings: 1 1 1
+endian: big
+encoding: raw
+data file: ./vol-raw-big.raw
