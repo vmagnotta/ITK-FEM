@@ -237,7 +237,7 @@ int itkFEMRegistrationFilterTest(int, char* [] )
   
     itk::fem::MaterialLinearElasticity::Pointer m;
     m=itk::fem::MaterialLinearElasticity::New();
-    m->GN=0;       // Global number of the material ///
+    m->SetGlobalNumber(0);       // Global number of the material ///
     m->E=registrator->GetElasticity();  // Young modulus -- used in the membrane ///
     m->A=1.0;     // Crossection area ///
     m->h=1.0;     // Crossection area ///

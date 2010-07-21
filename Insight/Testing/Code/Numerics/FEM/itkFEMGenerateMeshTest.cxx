@@ -59,7 +59,7 @@ int itkFEMGenerateMeshTest(int, char*[])
   // Create the material
   ElasticityType::Pointer m = ElasticityType::New();
 
-  m->GN = 0;
+  m->SetGlobalNumber(0);
   m->E = 1000.;
   m->A = 1.0;
   m->h = 1.0;

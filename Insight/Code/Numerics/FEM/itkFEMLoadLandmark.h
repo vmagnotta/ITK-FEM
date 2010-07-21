@@ -36,37 +36,6 @@ class LoadLandmark : public LoadElement {
 public:
 
   /**
-   * Square root of the variance (eta)
-   */
-  double eta;
-
-  /**
-   * Point in __local coordinates__ in the undeformed configuration
-   */
-  vnl_vector<Float> m_pt;
-
-  /**
-   * Point in __global coordinates__ in the deformed configuration
-   */
-  vnl_vector<Float> m_target;
-
-  vnl_vector<Float> m_source;
-
-  vnl_vector<Float> m_force;
-
-
-  /**
-   * Pointer to the element which contains the undeformed
-   * configuration of the landmark
-   */
-  //Element::ConstPointer m_element;
-
-  /**
-   * Pointer to the solution object
-   */
-  Solution::ConstPointer m_Solution;
-
-  /**
    * Methods to access the most recent solution vector
    */
   void SetSolution(Solution::ConstPointer ptr) { m_Solution = ptr; }
@@ -159,6 +128,22 @@ public:
       this->eta *= fwt;
       }
     }
+    
+  /**
+   * Set Eta
+   */
+  void SetEta( double value )
+    {
+    eta = value;
+    }
+ 
+  /**
+   * Get Eta
+   */   
+  double GetEta( )
+    {
+    return eta;
+    }
 
   /**
    * Read a LoadLandmark object from the input stream
@@ -179,6 +164,39 @@ public:
    * Default constructors
    */
   LoadLandmark() {}
+  
+protected:
+   /**
+   * Square root of the variance (eta)
+   */
+  double eta;
+
+  /**
+   * Point in __local coordinates__ in the undeformed configuration
+   */
+  vnl_vector<Float> m_pt;
+
+  /**
+   * Point in __global coordinates__ in the deformed configuration
+   */
+  vnl_vector<Float> m_target;
+
+  vnl_vector<Float> m_source;
+
+  vnl_vector<Float> m_force;
+
+
+  /**
+   * Pointer to the element which contains the undeformed
+   * configuration of the landmark
+   */
+  //Element::ConstPointer m_element;
+
+  /**
+   * Pointer to the solution object
+   */
+  Solution::ConstPointer m_Solution;
+  
 };
 
 FEM_CLASS_INIT(LoadLandmark)

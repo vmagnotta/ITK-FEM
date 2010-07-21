@@ -49,6 +49,20 @@ public:
    */
   virtual void Write( std::ostream& f ) const;
 
+  Element::ConstPointer GetElement() {return m_element;};
+
+  void SetElement(Element::ConstPointer e) {m_element = e;};
+
+  vnl_vector<Float> GetForce() {return F;};
+
+  void SetForce(vnl_vector<Float> force) {F=force;};
+
+  unsigned int GetPoint() {return m_pt;};
+
+  void SetPoint(unsigned int point) {m_pt = point;};
+
+
+private:
   /**
    * Pointer to an element in a system that contains the DOF
    * on which the external force is applied.
@@ -66,6 +80,7 @@ public:
    */
   vnl_vector<Float> F;
 
+public:
   LoadNode() : m_element(0) {}  // default constructor
   LoadNode( Element::ConstPointer element_, unsigned int pt_, vnl_vector<Float> F_ ) :
     m_element(element_), m_pt(pt_), F(F_) {}

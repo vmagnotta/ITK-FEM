@@ -151,7 +151,7 @@ Element2DStress<TBaseClass>
    * then write the actual data (material number)
    * We also add some comments in the output file
    */
-  f<<"\t"<<m_mat->GN<<"\t% MaterialLinearElasticity ID\n";
+  f<<"\t"<<m_mat->GetGlobalNumber()<<"\t% MaterialLinearElasticity ID\n";
 
   // check for errors
   if (!f)

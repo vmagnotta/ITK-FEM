@@ -27,6 +27,8 @@ itkFEMLinearSystemWrapperItpackTest2.cxx
 itkFEMLinearSystemWrapperVNLTest.cxx
 itkFEMLinearSystemWrapperDenseVNLTest.cxx
 itkFEMPArrayTest.cxx
+itkFEMLoadBCTest.cxx
+itkFEMLoadBCMFCTest.cxx
 )
 
 ADD_TEST(itkFEMC0HexahedralElement-NodalLoads-BCs ${FEM_TESTS} itkFEMElementTest ${ITK_DATA_ROOT}/Input/FEM/hexa2.fem)
@@ -79,6 +81,10 @@ ADD_TEST(itkFEMElement2DMembraneTest ${FEM_TESTS} itkFEMElement2DMembraneTest)
 ADD_TEST(itkFEMElement3DMembraneTest ${FEM_TESTS} itkFEMElement3DMembraneTest)
 ADD_TEST(itkFEMElement2DStrainTest ${FEM_TESTS} itkFEMElement2DStrainTest)
 ADD_TEST(itkFEMElement2DQuadraticTriangularTest ${FEM_TESTS2} itkFEMElement2DQuadraticTriangularTest)
+
+### VAM Newly Added Tests - ITKv4
+ADD_TEST(itkFEMLoadBCTest ${FEM_TESTS2} itkFEMLoadBCTest)
+ADD_TEST(itkFEMLoadBCMFCTest ${FEM_TESTS2} itkFEMLoadBCMFCTest)
 
 #ADD_TEST(itkFEMBar2DTest ${FEM_TESTS} itkFEMBar2DTest)
 

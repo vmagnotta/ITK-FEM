@@ -59,8 +59,8 @@ LoadImplementationGenericLandmarkLoad
 
    // Calculate the new force
   
-  load->m_force =  disp;
-  force =  (load->m_target-new_source) / load->eta;
+  load->SetForce(disp);
+  force =  (load->GetTarget()-new_source) / load->GetEta();
  
 //  std::cout << " disp " << disp <<  std::endl;
   //force /= vcl_sqrt(fmag);

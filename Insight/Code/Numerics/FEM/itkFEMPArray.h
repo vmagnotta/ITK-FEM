@@ -107,7 +107,7 @@ FEMPArray<T>::Find(int gn)
   Iterator iend = this->end();
   while( it != iend )
     {
-    if( (*it)->GN == gn )
+    if( (*it)->GetGlobalNumber() == gn )
       {
       break;
       }
@@ -144,7 +144,7 @@ FEMPArray<T>::Find( int gn ) const
   ConstIterator iend = this->end();
   while( it != iend )
     {
-    if( (*it)->GN == gn )
+    if( (*it)->GetGlobalNumber() == gn )
       {
       break;
       }
@@ -175,7 +175,7 @@ int FEMPArray<T>::Renumber()
 
   for(i = this->begin(); i != this->end(); i++)
     {
-    (*i)->GN=j;
+    (*i)->SetGlobalNumber(j);
     j++;
     }
 

@@ -738,7 +738,7 @@ void FEMRegistrationFilter<TMovingImage,TFixedImage>
     }
   m_Load->SetMetricRadius(r);
   m_Load->SetNumberOfIntegrationPoints(m_NumberOfIntegrationPoints[m_CurrentLevel]);
-  m_Load->GN = mySolver.load.size()+1; //NOTE SETTING GN FOR FIND LATER
+  m_Load->SetGlobalNumber( mySolver.load.size()+1 ); //NOTE SETTING GN FOR FIND LATER
   m_Load->SetSign((Float)m_DescentDirection);
   mySolver.load.push_back( FEMP<Load>(&*m_Load) );
   m_Load = dynamic_cast<typename FEMRegistrationFilter<TMovingImage,TFixedImage>::ImageMetricLoadType*>
@@ -841,7 +841,7 @@ void FEMRegistrationFilter<TMovingImage,TFixedImage>::ApplyLoads(SolverType& myS
             }
           }
 
-        m_LandmarkArray[lmind]->GN = lmind;
+        m_LandmarkArray[lmind]->SetGlobalNumber( lmind );
         LoadLandmark::Pointer l5 = (dynamic_cast<LoadLandmark::Pointer>(m_LandmarkArray[lmind]->Clone()));
         mySolver.load.push_back(FEMP<Load>(l5));
         }
@@ -909,11 +909,11 @@ void FEMRegistrationFilter<TMovingImage,TFixedImage>::ApplyLoads(SolverType& myS
               l1=LoadBC::New();
               // now we get the element from the node -- we assume we need fix the dof only once
               // even if more than one element shares it.
-              l1->m_element= (*elt);  // Fixed bug TS 1/17/03 ( *((*node)->m_elements.begin()));
+              l1->SetElement(*elt);  // Fixed bug TS 1/17/03 ( *((*node)->m_elements.begin()));
               //l1->m_element= ( *((*node)->m_elements[ect-1]));
               unsigned int localdof=whichnode*ndofpernode+jj;
-              l1->m_dof=localdof;
-              l1->m_value=vnl_vector<double>(1,0.0);
+              l1->SetDegreeOfFreedom( localdof );
+              l1->SetValue(vnl_vector<double>(1,0.0));
               mySolver.load.push_back( FEMP<Load>(&*l1) );
               }
             EdgeCounter++;

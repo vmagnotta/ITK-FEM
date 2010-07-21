@@ -19,6 +19,7 @@
 #define __itkFEMElementStd_h
 
 #include "itkFEMElementBase.h"
+#include "itkFEMUseSmartPointers.h"
 
 namespace itk {
 namespace fem {

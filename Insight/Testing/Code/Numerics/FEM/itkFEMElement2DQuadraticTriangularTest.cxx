@@ -54,7 +54,7 @@ int itkFEMElement2DQuadraticTriangularTest(int, char *[])
     
     ElasticityType::Pointer m = ElasticityType::New();
     
-    m->GN=0;
+    m->SetGlobalNumber(0);
     m->E=300.0;
     m->A=0.02;
     m->I=0.004;
@@ -62,7 +62,7 @@ int itkFEMElement2DQuadraticTriangularTest(int, char *[])
     typedef itk::fem::Element2DC0QuadraticTriangularStrain StrainType;
     StrainType::Pointer e0 = StrainType::New();
 
-    e0->GN=0;
+    e0->SetGlobalNumber(0);
     e0->SetNode(0, &*n0);
     e0->SetNode(1, &*n1);
     e0->SetNode(2, &*n2);

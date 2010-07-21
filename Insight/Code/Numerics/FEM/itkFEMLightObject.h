@@ -20,6 +20,7 @@
 
 #include "itkFEMMacro.h"
 #include "itkFEMException.h"
+#include "itkFEMUseSmartPointers.h"
 #include <iostream>
 
 namespace itk {
@@ -131,6 +132,24 @@ public:
    * #SkipWhiteSpace function.
    */
   static const std::string whitespaces;
+  
+  /**
+   * Get the global object number (ID of an object).
+   * In general the ID's are required to be unique only within
+   * a specific type of derived classes (Elements, Nodes, ...)
+   * If the GN is not required, it can be ignored. (normally you
+   * need the GN when writing or reading objects to/from stream.
+   */
+  int GetGlobalNumber( ) const {return m_GlobalNumber;};
+  
+  /**
+   * Set the global object number.
+   * In general the ID's are required to be unique only within
+   * a specific type of derived classes (Elements, Nodes, ...)
+   * If the GN is not required, it can be ignored. (normally you
+   * need the GN when writing or reading objects to/from stream.
+   */
+  void SetGlobalNumber( int globalNumber ) {m_GlobalNumber = globalNumber;};
 
 
 #ifdef FEM_USE_SMART_POINTERS
@@ -139,7 +158,7 @@ protected:  // If we're using smart pointers, constructors and destructors shoul
   /**
    * Default constructor
    */
-  FEMLightObject() : GN(-1) {}
+  FEMLightObject() : m_GlobalNumber(-1) {}
 
   /**
    * Virtual destructor
@@ -149,10 +168,10 @@ protected:  // If we're using smart pointers, constructors and destructors shoul
   /**
    * Copy constructor must be available for the FEM objects...
    */
-  FEMLightObject(const FEMLightObject& o) { GN=o.GN; }
+  FEMLightObject(const FEMLightObject& o) { m_GlobalNumber=o.m_GlobalNumber; }
 
 
-public:
+//public:
   /**
    * Global number of an object (ID of an object)
    * In general the ID's are required to be unique only within
@@ -160,7 +179,7 @@ public:
    * If the GN is not required, it can be ignored. (normally you
    * need the GN when writing or reading objects to/from stream.
    */
-  int GN;
+  int m_GlobalNumber;
 
 };
 

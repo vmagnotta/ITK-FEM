@@ -104,7 +104,7 @@ void LoadElement::Write( std::ostream& f ) const
     f << "\t";
     for(ElementPointersVectorType::const_iterator i=el.begin(); i != el.end(); i++)
       {
-      f<<((*i)->GN)<<" ";
+      f<<((*i)->GetGlobalNumber())<<" ";
       }
     f << "\t% GNs of elements" << std::endl;
     }

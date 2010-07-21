@@ -25,6 +25,45 @@
 namespace itk {
 namespace fem {
 
+
+/****************** SetDegreeOfFreedom ******************/ 
+void LoadBC::SetDegreeOfFreedom( int dof ) 
+{ 
+  m_DegreeOfFreedom= dof;
+}
+
+/****************** GetDegreeOfFreedom ******************/   
+int LoadBC::GetDegreeOfFreedom( ) 
+{ 
+  return m_DegreeOfFreedom;
+}
+  
+
+/****************** SetElement ******************/   
+void LoadBC::SetElement(LoadElementConstPointerType element) 
+{
+  m_Element = element;
+}
+  
+/****************** GetElement ******************/   
+const LoadBC::LoadElementConstPointerType LoadBC::GetElement() 
+{
+  return m_Element;
+}
+  
+/****************** SetValue ******************/   
+void LoadBC::SetValue(LoadValueType value) 
+{ 
+  m_Value = value;
+}
+  
+/****************** GetValue ******************/     
+const LoadBC::LoadValueType LoadBC::GetValue() 
+{ 
+  return m_Value;
+}
+  
+  
 /** Read the LoadBC object from input stream */
 void LoadBC::Read( std::istream& f, void* info )
 {
@@ -42,7 +81,7 @@ void LoadBC::Read( std::istream& f, void* info )
   this->SkipWhiteSpace(f); f>>n; if(!f) goto out;
   try
     {
-    this->m_element=dynamic_cast<const Element*>( &*elements->Find(n) );
+    this->m_Element=dynamic_cast<const Element*>( &*elements->Find(n) );
     }
   catch ( FEMExceptionObjectNotFound e )
     {
@@ -50,12 +89,12 @@ void LoadBC::Read( std::istream& f, void* info )
     }
   
   /* read the local DOF number within that element */
-  this->SkipWhiteSpace(f); f>>this->m_dof; if(!f) goto out;
+  this->SkipWhiteSpace(f); f>>this->m_DegreeOfFreedom; if(!f) goto out;
 
   /* read the value to which the DOF is fixed */
   this->SkipWhiteSpace(f); f>>n; if(!f) goto out;
-  this->m_value.set_size(n);
-  this->SkipWhiteSpace(f); f>>this->m_value; if(!f) goto out;
+  this->m_Value.set_size(n);
+  this->SkipWhiteSpace(f); f>>this->m_Value; if(!f) goto out;
 
   out:
 
@@ -78,12 +117,12 @@ void LoadBC::Write( std::ostream& f ) const
   /*
    * Write the actual Load data
    */
-  f<<"\t"<<this->m_element->GN<<"\t% GN of element"<<"\n";
-  f<<"\t"<<this->m_dof<<"\t% DOF# in element"<<"\n";
+  f<<"\t"<<this->m_Element->GetGlobalNumber()<<"\t% GN of element"<<"\n";
+  f<<"\t"<<this->m_DegreeOfFreedom<<"\t% DOF# in element"<<"\n";
 
   /* write the value of dof */
-  f<<"\t"<<this->m_value.size();
-  f<<" "<<this->m_value<<"\t% value of the fixed DOF"<<"\n";
+  f<<"\t"<<this->m_Value.size();
+  f<<" "<<this->m_Value<<"\t% value of the fixed DOF"<<"\n";
 
   /* check for errors */
   if (!f)
@@ -91,6 +130,23 @@ void LoadBC::Write( std::ostream& f ) const
     throw FEMExceptionIO(__FILE__,__LINE__,"LoadBC::Write()","Error writing FEM load!");
     }
 
+}
+
+/**
+ * PrintSelf 
+ */
+void LoadBC::PrintSelf( std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+  os << indent << "Element: " << m_Element << std::endl;
+  m_Element->Print(os, indent.GetNextIndent());
+  os << indent << "Degree Of Freedom: " << m_DegreeOfFreedom << std::endl;
+  os << indent << "Value: [";
+  for (unsigned int i=0;i<m_Value.size();i++)
+  {
+    os << " " << m_Value[i];
+  }
+  os << "]" << std::endl;
 }
 
 FEM_CLASS_REGISTER(LoadBC)

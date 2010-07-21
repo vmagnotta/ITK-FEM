@@ -89,7 +89,7 @@ int itkFEMPArrayTest(int, char*[])
     pt[0]=0.;
     pt[1]=3.;
     n1->SetCoordinates(pt);
-    n1->GN = 200;
+    n1->SetGlobalNumber(200);
     array.push_back( FEMPointer(&*n1));
 
     NodeType::Pointer node;

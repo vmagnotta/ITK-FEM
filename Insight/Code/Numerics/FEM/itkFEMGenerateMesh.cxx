@@ -55,7 +55,7 @@ void Generate2DRectilinearMesh(itk::fem::Element::ConstPointer e0, Solver& S, vn
     for(double i=0; i<=Ni; i++)  
       {
       n=new Node(orig[0]+i*size[0]/Nel[0], orig[1]+j*size[1]/Nel[1]);
-      n->GN=gn;
+      n->SetGlobalNumber(gn);
       gn++;
       S.node.push_back(FEMP<Node>(n));
       }
@@ -73,7 +73,7 @@ void Generate2DRectilinearMesh(itk::fem::Element::ConstPointer e0, Solver& S, vn
       e->SetNode(1,S.node.Find((unsigned int) (i+1+(Ni+1)*j)     ));
       e->SetNode(2,S.node.Find((unsigned int) (i+1+(Ni+1)*(j+1)) ));
       e->SetNode(3,S.node.Find((unsigned int) (i+  (Ni+1)*(j+1)) ));
-      e->GN=gn;
+      e->SetGlobalNumber(gn);
       gn++;
       S.el.push_back(FEMP<Element>(e));
       }
@@ -120,7 +120,7 @@ void Generate3DRectilinearMesh
         zz=orig[2]+k*size[2]/Nel[2];
 //std::cout << " xx " << xx << " yy " << yy << " zz " << zz << std::endl;
         n=new Node(xx,yy,zz);
-        n->GN=gn;
+        n->SetGlobalNumber(gn);
         gn++;
         S.node.push_back(FEMP<Node>(n));
         }
@@ -146,7 +146,7 @@ void Generate3DRectilinearMesh
         e->SetNode(6,S.node.Find((unsigned int) (i+1+(Ni+1)*(j+1+(Nj+1)*(k+1)) )));
         e->SetNode(7,S.node.Find((unsigned int) (i+  (Ni+1)*(j+1+(Nj+1)*(k+1)) )));
 
-        e->GN=gn;
+        e->SetGlobalNumber(gn);
         gn++;
         S.el.push_back(FEMP<Element>(e));
         }

@@ -257,7 +257,7 @@ void Solver::AssembleK()
     if ( LoadBCMFC::Pointer l1=dynamic_cast<LoadBCMFC*>( &(*(*l))) )
       {
       // store the index of an LoadBCMFC object for later
-      l1->Index=NMFC;
+      l1->SetIndex( NMFC );
       // increase the number of MFC
       NMFC++;
       }
@@ -291,8 +291,8 @@ void Solver::AssembleK()
     if ( LoadLandmark::Pointer l3=dynamic_cast<LoadLandmark*>( &(*(*l2))) )
       {
       l3->AssignToElement(&el);
-      Element::Pointer ep = const_cast<Element*>( l3->el[0] );
-      this->AssembleLandmarkContribution( ep , l3->eta );
+      Element::Pointer ep = const_cast<Element*>( l3->GetElements()[0] );
+      this->AssembleLandmarkContribution( ep , l3->GetEta() );
       }
     }
 
@@ -429,15 +429,15 @@ void Solver::AssembleF(int dim)
       // yep, we have a nodal load
       
       // size of a force vector in load must match number of DOFs in node
-      if ( (l1->F.size() % l1->m_element->GetNumberOfDegreesOfFreedomPerNode()) != 0 )
+      if ( (l1->GetForce().size() % l1->GetElement()->GetNumberOfDegreesOfFreedomPerNode()) != 0 )
         {
         throw FEMExceptionSolution(__FILE__,__LINE__,"Solver::AssembleF()","Illegal size of a force vector in LoadNode object!");
         }
 
       // we simply copy the load to the force vector
-      for(unsigned int d=0; d < (l1->m_element->GetNumberOfDegreesOfFreedomPerNode()); d++)
+      for(unsigned int d=0; d < (l1->GetElement()->GetNumberOfDegreesOfFreedomPerNode()); d++)
         {
-        Element::DegreeOfFreedomIDType dof=l1->m_element->GetNode(l1->m_pt)->GetDegreeOfFreedom(d);
+        Element::DegreeOfFreedomIDType dof=l1->GetElement()->GetNode(l1->GetPoint())->GetDegreeOfFreedom(d);
         // error checking
         if ( dof >= NGFN )
           {
@@ -452,7 +452,7 @@ void Solver::AssembleF(int dim)
          * inside the LoadNode class is correct for given number of
          * dimensions
          */
-        m_ls->AddVectorValue(dof , l1->F[d+l1->m_element->GetNumberOfDegreesOfFreedomPerNode()*dim]);
+        m_ls->AddVectorValue(dof , l1->GetForce()[d+l1->GetElement()->GetNumberOfDegreesOfFreedomPerNode()*dim]);
         }
 
       // that's all there is to DOF loads, go to next load in an array
@@ -466,13 +466,13 @@ void Solver::AssembleF(int dim)
     if ( LoadElement::Pointer l1=dynamic_cast<LoadElement*>(&*l0) )
       {
 
-      if ( !(l1->el.empty()) )
+      if ( !(l1->GetElements().empty()) )
         {
         /**
          * If array of element pointers is not empty,
          * we apply the load to all elements in that array
          */
-        for(LoadElement::ElementPointersVectorType::const_iterator i=l1->el.begin(); i != l1->el.end(); i++)
+        for(LoadElement::ElementPointersVectorType::const_iterator i=l1->GetElements().begin(); i != l1->GetElements().end(); i++)
           {
 
           const Element* el0=(*i);
@@ -529,7 +529,7 @@ void Solver::AssembleF(int dim)
      */
     if ( LoadBCMFC::Pointer l1=dynamic_cast<LoadBCMFC*>(&*l0) )
       {
-      m_ls->SetVectorValue(NGFN+l1->Index , l1->rhs[dim]);
+      m_ls->SetVectorValue(NGFN+l1->GetIndex() , l1->GetRightHandSide()[dim]);
 
       // skip to next load in an array
       continue;
@@ -543,7 +543,7 @@ void Solver::AssembleF(int dim)
       
       // Here we just store the values of fixed DOFs. We can't set it here, because
       // it may be changed by other loads that are applied later.
-      bcterm[ l1->m_element->GetDegreeOfFreedom(l1->m_dof) ]=l1->m_value[dim];
+      bcterm[ l1->GetElement()->GetDegreeOfFreedom(l1->GetDegreeOfFreedom()) ]=l1->GetValue()[dim];
       
       // skip to the next load in an array
       continue;
@@ -667,13 +667,14 @@ void Solver::ApplyBC(int dim, unsigned int matrix)
     if ( LoadBCMFC::Pointer c=dynamic_cast<LoadBCMFC*>(&*l0) )
       {
       /* step over all DOFs in MFC */
-      for(LoadBCMFC::LhsType::iterator q=c->lhs.begin();
-          q != c->lhs.end();
+      LoadBCMFC::LhsType lhs = c->GetLeftHandSide();
+      for(LoadBCMFC::LhsType::iterator q=lhs.begin();
+          q != lhs.end();
           q++) {
 
       /* obtain the GFN of DOF that is in the MFC */
       Element::DegreeOfFreedomIDType gfn=
-        q->m_element->GetDegreeOfFreedom(q->dof);
+        q->GetElement()->GetDegreeOfFreedom(q->GetDegreeOfFreedom());
 
       /* error checking. all GFN should be =>0 and <NGFN */
       if ( gfn>=NGFN )
@@ -682,8 +683,8 @@ void Solver::ApplyBC(int dim, unsigned int matrix)
         }
 
       /* set the proper values in matster stiffnes matrix */
-      this->m_ls->SetMatrixValue(gfn, NGFN+c->Index, q->value, matrix);
-      this->m_ls->SetMatrixValue(NGFN+c->Index, gfn, q->value, matrix);  // this is a symetric matrix...
+      this->m_ls->SetMatrixValue(gfn, NGFN+c->GetIndex(), q->GetValue(), matrix);
+      this->m_ls->SetMatrixValue(NGFN+c->GetIndex(), gfn, q->GetValue(), matrix);  // this is a symetric matrix...
 
       }
 
@@ -697,8 +698,8 @@ void Solver::ApplyBC(int dim, unsigned int matrix)
     if ( LoadBC::Pointer c=dynamic_cast<LoadBC*>(&*l0) )
       {
 
-      Element::DegreeOfFreedomIDType fdof = c->m_element->GetDegreeOfFreedom(c->m_dof);
-      Float fixedvalue=c->m_value[dim];
+      Element::DegreeOfFreedomIDType fdof = c->GetElement()->GetDegreeOfFreedom(c->GetDegreeOfFreedom());
+      Float fixedvalue=c->GetValue()[dim];
 
 
       // Copy the corresponding row of the matrix to the vector that will

@@ -25,6 +25,7 @@
 namespace itk {
 namespace fem {
 
+
 /** 
  * Read the Load object from input stream
  */
@@ -97,6 +98,54 @@ void LoadEdge::Write( std::ostream& f ) const
     }
 
 }
+
+/**
+ * Set the edge where the force is applied.
+ */
+void LoadEdge::SetEdge(int edge)
+{
+  m_Edge = edge;
+}
+
+/**
+ * Get the edge where the force is applied.
+ */
+int LoadEdge::GetEdge()
+{
+  return m_Edge;
+}
+
+/**
+ * Set the force applied to the edge.
+ */  
+void LoadEdge::SetForce(LoadEdge::LoadForceType force)
+{
+  m_Force = force;
+}
+
+/**
+ * Get the force applied to the edge.
+ */  
+LoadEdge::LoadForceType LoadEdge::GetForce() const
+{
+  return m_Force;
+}  
+
+/**
+ * PrintSelf 
+ */
+void LoadEdge::PrintSelf( std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+  os << indent << "Edge: " << m_Edge << std::endl;
+  os << indent << "Force: [";
+  for (unsigned int i=0;i<m_Force.size();i++)
+  {
+    os << " " << m_Force[i];
+  }
+  os << "]" << std::endl;
+}
+
 
 FEM_CLASS_REGISTER(LoadEdge)
 

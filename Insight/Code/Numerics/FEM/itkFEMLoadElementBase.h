@@ -51,13 +51,26 @@ public:
    * Type of array of pointers to element objects
    */
   typedef std::vector<Element::ConstPointer> ElementPointersVectorType;
-  ElementPointersVectorType el;  /** pointers to element objects on which the load acts */
+  
 
   virtual void Read( std::istream& f, void* info );
   void Write( std::ostream& f ) const;
 
   // FIXME: should clear vector, not zero it
   LoadElement() : el(0) {}
+  
+  void SetElements(ElementPointersVectorType elements)
+  {
+    el = elements;
+  }
+  
+  ElementPointersVectorType GetElements( )
+  {
+    return el;
+  }
+  
+protected:
+  ElementPointersVectorType el;  /** pointers to element objects on which the load acts */
 
 };
 

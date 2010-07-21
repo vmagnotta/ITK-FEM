@@ -85,7 +85,8 @@ ElementStd<VNumberOfPoints, VNumberOfSpatialDimensions, TBaseClass>
   // We also add some comments in the output file
   for(unsigned int p=0; p<NumberOfNodes; p++)
     {
-    f<<"\t"<<m_node[p]->GN<<"\t% Node #"<<(p+1)<<" ID\n";
+    NodeIDType currentNode = this->GetNode(p);
+    f<<"\t"<<currentNode->GetGlobalNumber()<<"\t% Node #"<<(p+1)<<" ID\n";
     }
 
   // check for errors

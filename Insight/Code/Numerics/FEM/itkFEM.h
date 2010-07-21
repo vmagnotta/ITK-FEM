@@ -47,4 +47,6 @@
  * \brief Contains finite element modeling (FEM) classes and support routines.
  */
 
+//#define FEM_USE_SMART_POINTERS 
+
 #endif

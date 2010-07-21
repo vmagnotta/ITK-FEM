@@ -36,7 +36,7 @@ void FEMLightObject::Read( std::istream& f, void* )
 
   /** Read and set the global object number */
   this->SkipWhiteSpace(f); f>>n; if(!f) { goto out; }
-  this->GN=n;
+  this->m_GlobalNumber=n;
 
   out:
 
@@ -60,7 +60,7 @@ void FEMLightObject::Write( std::ostream& f ) const
   f<<'<'<<FEMObjectFactory<Self>::ID2ClassName(this->ClassID())<<">\n";
 
   // then the global object number
-  f<<"\t"<<GN<<"\t% Global object number\n";
+  f<<"\t"<<this->m_GlobalNumber<<"\t% Global object number\n";
 
   // check for errors
   if (!f)

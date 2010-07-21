@@ -79,7 +79,7 @@ void SolverCrankNicolson::AssembleKandM()
     if ( LoadBCMFC::Pointer l1=dynamic_cast<LoadBCMFC*>( &(*(*l))) )
       {
       // store the index of an LoadBCMFC object for later
-      l1->Index=NMFC;
+      l1->SetIndex(NMFC);
       // store the pointer to a LoadBCMFC object for later
       mfcLoads.push_back(l1);
       // increase the number of MFC
@@ -152,10 +152,10 @@ void SolverCrankNicolson::AssembleKandM()
     {
     if ( LoadLandmark::Pointer l3=dynamic_cast<LoadLandmark*>( &(*(*l2))) )
       {
-      Element::Pointer ep = const_cast<Element*>( l3->el[0] );
+      Element::Pointer ep = const_cast<Element*>( l3->GetElements()[0] );
 
       Element::MatrixType Le;
-      ep->GetLandmarkContributionMatrix( l3->eta, Le );
+      ep->GetLandmarkContributionMatrix( l3->GetEta(), Le );
       
       int Ne = ep->GetNumberOfDegreesOfFreedom();
       
@@ -215,7 +215,7 @@ void SolverCrankNicolson::AssembleFforTimeStep(int dim)
     Load::Pointer l0=*l;
     if ( LoadBC::Pointer l1=dynamic_cast<LoadBC*>(&*l0) )
       {
-      bcterm[ l1->m_element->GetDegreeOfFreedom(l1->m_dof) ]=l1->m_value[dim];
+      bcterm[ l1->GetElement()->GetDegreeOfFreedom(l1->GetDegreeOfFreedom()) ]=l1->GetValue()[dim];
       }
     } // end for LoadArray::iterator l
 

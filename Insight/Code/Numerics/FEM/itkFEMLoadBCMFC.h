@@ -46,7 +46,7 @@ namespace fem {
  */
 
 // forward declaratons...
-class Solver;
+//class Solver;
 
 class LoadBCMFC : public Load
 {
@@ -61,33 +61,37 @@ public:
   class MFCTerm 
     {
     public:
-    /**
-     * Pointer to element, which holds the DOF that is affected by MFC
-     */
-      Element::ConstPointer m_element;
-
-    /**
-     * DOF number within the Element object
-     */
-      unsigned int dof;
-
-    /**
-     * Value with which this displacement is multiplied on the lhs of MFC equation
-     */
-      Element::Float value;
+    
+      void SetDegreeOfFreedom( int dof ) { m_DegreeOfFreedom = dof;};
+      int GetDegreeOfFreedom( ) const { return m_DegreeOfFreedom;};
+      
+      void SetElement(Element::ConstPointer element) {m_Element = element;};
+      const Element::ConstPointer GetElement() const {return m_Element;};
+      
+      void SetValue(Element::Float cvalue) {m_Value = cvalue;};
+      Element::Float GetValue() const { return m_Value;};
 
     /**
      * Constructor for easy object creation.
      */
-      MFCTerm(Element::ConstPointer element_, int dof_, Element::Float value_) : m_element(element_), dof(dof_), value(value_) {}
-      
+      MFCTerm(Element::ConstPointer element_, int dof_, Element::Float value_) : m_Element(element_), m_DegreeOfFreedom(dof_), m_Value(value_) {}
+    
+    protected:
+      /** Pointer to element, which holds the DOF that is affected by MFC*/
+      Element::ConstPointer m_Element;
+      /** DOF number within the Element object*/
+      unsigned int m_DegreeOfFreedom;  
+      /** Value with which this displacement is multiplied on the lhs of MFC equation */
+      Element::Float m_Value;
     };
   
   /**
    * Left hand side of the MFC constraint equation
    */
-  typedef std::vector<MFCTerm> LhsType;
-  LhsType lhs;
+  typedef std::vector<MFCTerm>        LhsType;
+  typedef vnl_vector<Element::Float>  RhsType;
+
+  
 
   /**
    * Right hand side of the linear equation that defines the constraints.
@@ -95,7 +99,7 @@ public:
    * Which value is applied to the master force vector is defined by optional
    * dim parameter (defaults to 0) in AssembleF function in solver.
    */
-  vnl_vector<Element::Float> rhs;
+  //vnl_vector<Element::Float> rhs;
 
   /** Default constructor */
   LoadBCMFC() {}
@@ -116,12 +120,23 @@ public:
 
   /** write a LoadBCMFC object to the output stream. */
   virtual void Write( std::ostream& f ) const;
+  
+  void SetIndex(int value) {m_Index = value;};
+  int GetIndex() {return m_Index;};
+  
+  void SetLeftHandSide(LhsType value) {m_LeftHandSide=value;};
+  LhsType GetLeftHandSide() {return m_LeftHandSide;};
+  
+  void SetRightHandSide(vnl_vector<Element::Float> value) {m_RightHandSide = value;};
+  vnl_vector<Element::Float> GetRightHandSide() {return m_RightHandSide;};
+  
 
-//private:  // FIXME: CrankNicolsonSolver class, which is derived from Solver class also needs access to Index.
-  /** used internally by the Solver class */
-  int Index;
-  friend class Solver;
+protected:
+  void PrintSelf(std::ostream& os, Indent indent) const;
 
+  int     m_Index;
+  LhsType m_LeftHandSide;
+  RhsType m_RightHandSide;
 };
 
 FEM_CLASS_INIT(LoadBCMFC)

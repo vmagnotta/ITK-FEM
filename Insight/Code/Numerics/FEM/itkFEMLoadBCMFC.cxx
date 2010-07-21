@@ -30,11 +30,11 @@ namespace fem {
  */
 LoadBCMFC::LoadBCMFC(Element::ConstPointer element, int dof, vnl_vector<Element::Float> val)
 {
-  lhs.clear();
+  m_LeftHandSide.clear();
 
   /** Set the correct weight */
-  lhs.push_back( MFCTerm(element, dof, 1.0) );
-  rhs=val;
+  m_LeftHandSide.push_back( MFCTerm(element, dof, 1.0) );
+  m_RightHandSide=val;
 }
 
 /** Read the LoadBCMFC object from input stream */
@@ -54,7 +54,7 @@ void LoadBCMFC::Read( std::istream& f, void* info )
   /** read number of terms in lhs of MFC equation */
   this->SkipWhiteSpace(f); f>>nlhs; if(!f) goto out;
   
-  lhs.clear();
+  m_LeftHandSide.clear();
   for(int i=0; i<nlhs; i++) 
     {
     /** read and set pointer to element that we're applying the load to */
@@ -76,13 +76,13 @@ void LoadBCMFC::Read( std::istream& f, void* info )
     this->SkipWhiteSpace(f); f>>d; if(!f) goto out;
 
     /** add a new MFCTerm to the lhs */
-    lhs.push_back( MFCTerm(element, n, d) );
+    m_LeftHandSide.push_back( MFCTerm(element, n, d) );
     }
 
   /** read the rhs */
   this->SkipWhiteSpace(f); f>>n; if(!f) goto out;
-  rhs.set_size(n);
-  this->SkipWhiteSpace(f); f>>rhs; if(!f) goto out;
+  m_RightHandSide.set_size(n);
+  this->SkipWhiteSpace(f); f>>m_RightHandSide; if(!f) goto out;
 
 out:
 
@@ -107,21 +107,21 @@ void LoadBCMFC::Write( std::ostream& f ) const
    */
 
   /** write the number of DOFs affected by this MFC */
-  f << "\t" << static_cast<int>( lhs.size() ) << "\t% Number of DOFs in this MFC" << std::endl;
+  f << "\t" << static_cast<int>( m_LeftHandSide.size() ) << "\t% Number of DOFs in this MFC" << std::endl;
 
   /** write each term */
   f << "\t  %==>\n";
-  for(LhsType::const_iterator q=lhs.begin(); q != lhs.end(); q++) 
+  for(LhsType::const_iterator q=m_LeftHandSide.begin(); q != m_LeftHandSide.end(); q++) 
     {
-    f << "\t  "<<q->m_element->GN<<"\t% GN of element" << std::endl;
-    f << "\t  "<<q->dof<<"\t% DOF# in element" << std::endl;
-    f << "\t  "<<q->value<<"\t% weight" << std::endl;
+    f << "\t  "<<q->GetElement()->GetGlobalNumber()<<"\t% GN of element" << std::endl;
+    f << "\t  "<<q->GetDegreeOfFreedom()<<"\t% DOF# in element" << std::endl;
+    f << "\t  "<<q->GetValue()<<"\t% weight" << std::endl;
     f << "\t  %==>\n";
     }
 
   /** write the rhs */
-  f << "\t" << static_cast<int>( rhs.size() );
-  f << " "  << rhs <<"\t% rhs of MFC" << std::endl;
+  f << "\t" << static_cast<int>( m_RightHandSide.size() );
+  f << " "  << m_RightHandSide <<"\t% rhs of MFC" << std::endl;
 
   /** check for errors */
   if (!f)
@@ -130,6 +130,28 @@ void LoadBCMFC::Write( std::ostream& f ) const
     }
 
 }
+
+/**
+ * PrintSelf 
+ */
+void LoadBCMFC::PrintSelf( std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+  os << indent << "Index: " << m_Index << std::endl;
+  os << indent << "Left Hand Side: " << std::endl;
+  os << indent.GetNextIndent() << "Index, DOF, Element, Value" << std::endl; 
+  int i=0;
+  for(LoadBCMFC::LhsType::const_iterator q=m_LeftHandSide.begin();q != m_LeftHandSide.end();q++) 
+    {
+    os << indent.GetNextIndent() << i << ", "; 
+    os << q->GetDegreeOfFreedom() << ", ";
+    os << q->GetElement() << ", ";
+    os << q->GetValue() << std::endl;
+    i++;
+    }  
+  os << indent << "Right Hand Side:" << m_RightHandSide << std::endl;
+}
+
 
 FEM_CLASS_REGISTER(LoadBCMFC)
 

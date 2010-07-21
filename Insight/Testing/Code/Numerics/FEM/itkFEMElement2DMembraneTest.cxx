@@ -59,7 +59,7 @@ int itkFEMElement2DMembraneTest(int, char *[])
 
     ElasticityType::Pointer m;
     m=ElasticityType::New();
-    m->GN=0;
+    m->SetGlobalNumber(0);
     m->E=30000.0;
     m->A=0.02;
     m->I=0.004;
@@ -67,7 +67,7 @@ int itkFEMElement2DMembraneTest(int, char *[])
     typedef itk::fem::Element2DC0LinearQuadrilateralMembrane  MembraneElementType;
     MembraneElementType::Pointer e0 = MembraneElementType::New();
 
-    e0->GN=0;
+    e0->SetGlobalNumber(0);
     e0->SetNode(0, &*n0);
     e0->SetNode(1, &*n1);
     e0->SetNode(2, &*n2);

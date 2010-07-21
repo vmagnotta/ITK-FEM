@@ -80,7 +80,7 @@ void LoadNode::Write( std::ostream& f ) const {
   Superclass::Write(f);
 
   /** write the actual Load data */
-  f<<"\t"<<this->m_element->GN<<"\t% GN of element on which the load acts"<<"\n";
+  f<<"\t"<<this->m_element->GetGlobalNumber()<<"\t% GN of element on which the load acts"<<"\n";
   f<<"\t"<<this->m_pt<<" "<<"\t% Point number within the element\n";
   f<<"\t"<<this->F.size()<<" "<<this->F<<"\t% Force vector (first number is the size of a vector)\n";
 
